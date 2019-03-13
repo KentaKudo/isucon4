@@ -2,6 +2,7 @@ package worker
 
 import (
 	"math/rand"
+	"net/http"
 	"strconv"
 	"time"
 
@@ -93,6 +94,6 @@ func (w *Worker) SendScore(apiKey string, score float64, successes, fails int32,
 	for key, val := range metadata {
 		sendResult.PostData["metadata["+key+"]"] = val
 	}
-	sendResult.ExpectedStatusCode = 201
+	sendResult.Expectation.StatusCode = http.StatusCreated
 	return sendResult.Play(w)
 }
