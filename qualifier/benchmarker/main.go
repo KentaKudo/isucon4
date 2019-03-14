@@ -100,7 +100,7 @@ func main() {
 }
 
 func benchmark(c *cli.Context) {
-	checkInstanceMetadata()
+	// checkInstanceMetadata()
 
 	logger.Print("type:info\tmessage:launch benchmarker")
 
