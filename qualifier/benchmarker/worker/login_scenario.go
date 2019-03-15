@@ -40,7 +40,7 @@ func (w *Worker) LoginWithSuccess(from *ip.IP, user *user.User) error {
 	topPage := NewScenario("GET", "/")
 	topPage.IP = from
 	topPage.Expectation.StatusCode = http.StatusOK
-	topPage.Expectation.Selectors = []string{"//input[@name='login']", "//input[@name='password']", "//*[@type='submit']"}
+	topPage.Expectation.Selectors = []string{"input[name='login']", "input[name='password']", "*[type='submit']"}
 	topPage.Expectation.Assets = defaultExpectedAssets
 
 	err := topPage.Play(w)
@@ -58,7 +58,7 @@ func (w *Worker) LoginWithSuccess(from *ip.IP, user *user.User) error {
 	login.Expectation.StatusCode = http.StatusOK
 	login.Expectation.Location = "/mypage"
 	if user.LastLoginedIP != nil {
-		login.Expectation.HTML = map[string]string{"//*[@id='last-logined-ip']": user.LastLoginedIP.String()}
+		login.Expectation.HTML = map[string]string{"#last-logined-ip": user.LastLoginedIP.String()}
 		login.Expectation.LastLoginedAt = user.LastLoginedTime
 	}
 	login.Expectation.Assets = defaultExpectedAssets
@@ -81,7 +81,7 @@ func (w *Worker) LoginWithFail(from *ip.IP, user *user.User) error {
 	topPage := NewScenario("GET", "/")
 	topPage.IP = from
 	topPage.Expectation.StatusCode = http.StatusOK
-	topPage.Expectation.Selectors = []string{"//input[@name='login']", "//input[@name='password']", "//*[@type='submit']"}
+	topPage.Expectation.Selectors = []string{"input[name='login']", "input[name='password']", "*[type='submit']"}
 	topPage.Expectation.Assets = defaultExpectedAssets
 
 	err := topPage.Play(w)
@@ -98,7 +98,7 @@ func (w *Worker) LoginWithFail(from *ip.IP, user *user.User) error {
 	}
 	login.Expectation.StatusCode = http.StatusOK
 	login.Expectation.Location = "/"
-	login.Expectation.HTML = map[string]string{"//*[@id='notice-message']": "Wrong username or password"}
+	login.Expectation.HTML = map[string]string{"#notice-message": "Wrong username or password"}
 	login.Expectation.Assets = defaultExpectedAssets
 
 	err = login.Play(w)
@@ -116,7 +116,7 @@ func (w *Worker) LoginWithBlocked(from *ip.IP, user *user.User) error {
 	topPage := NewScenario("GET", "/")
 	topPage.IP = from
 	topPage.Expectation.StatusCode = http.StatusOK
-	topPage.Expectation.Selectors = []string{"//input[@name='login']", "//input[@name='password']", "//*[@type='submit']"}
+	topPage.Expectation.Selectors = []string{"input[name='login']", "input[name='password']", "*[type='submit']"}
 	topPage.Expectation.Assets = defaultExpectedAssets
 
 	err := topPage.Play(w)
@@ -133,9 +133,9 @@ func (w *Worker) LoginWithBlocked(from *ip.IP, user *user.User) error {
 	}
 	login.Expectation.StatusCode = http.StatusOK
 	login.Expectation.Location = "/"
-	login.Expectation.HTML = map[string]string{"//*[@id='notice-message']": "This account is locked."}
+	login.Expectation.HTML = map[string]string{"#notice-message": "This account is locked."}
 	if from.IsBlacklisted() {
-		login.Expectation.HTML["//*[@id='notice-message']"] = "You're banned."
+		login.Expectation.HTML["#notice-message"] = "You're banned."
 	}
 	login.Expectation.Assets = defaultExpectedAssets
 
